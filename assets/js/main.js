@@ -137,6 +137,12 @@
     setInterval(function () { render(false); }, 60000);
   }
 
+  /* ringen pauzeren buiten beeld (scheelt batterij) */
+  var sunEl = document.querySelector('.sun');
+  if (sunEl && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { es.forEach(function (e) { sunEl.classList.toggle('paused', !e.isIntersecting); }); }).observe(sunEl);
+  }
+
   /* ---------- kuurplanner ---------- */
   var PRICES = window.SFJ_PRICES || {};
   document.querySelectorAll('[data-calc]').forEach(function (box) {
