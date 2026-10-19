@@ -1,0 +1,34 @@
+name: scrape-oude-site
+# Spiegelt de huidige sunforjoy.nl (tekst, css, afbeeldingen) naar branch 'scrape'
+on:
+  push:
+    paths: ['.github/workflows/scrape.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror sunforjoy.nl
+        run: |
+          OUT="$RUNNER_TEMP/out"; mkdir -p "$OUT"; cd "$OUT"
+          wget --mirror --page-requisites --adjust-extension --no-parent -e robots=off \
+            --span-hosts --domains=sunforjoy.nl,www.sunforjoy.nl,snelsite.nl,www.snelsite.nl \
+            --wait=0.3 --tries=2 --timeout=20 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            https://www.sunforjoy.nl/ https://www.sunforjoy.nl/sitemap https://www.sunforjoy.nl/contact \
+            https://www.sunforjoy.nl/robots.txt https://www.sunforjoy.nl/sitemap.xml 2>&1 | tail -n 40 || true
+          curl -sSL -A "Mozilla/5.0" -D headers.txt -o home-raw.html https://www.sunforjoy.nl/ || true
+          find . -type f | sort > filelist.txt
+          wc -l filelist.txt
+      - name: Commit to scrape branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git checkout --orphan scrape
+          git rm -rf . -q
+          cp -r "$RUNNER_TEMP/out/." .
+          git add -A
+          git commit -q -m "Mirror sunforjoy.nl $(date -u +%F)"
+          git push -f origin scrape
