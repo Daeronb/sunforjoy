@@ -1,0 +1,188 @@
+var colCount = 0;
+var colWidth = 0;
+var margin = 0;
+var minmargin = 15;
+var maxmargin = 15;
+var vertmargin = 15; 
+var windowWidth = 0;
+var leftstart = 0;
+var blocks = [];
+var contHeight = 0;
+var redo='N';
+var uitlijn = 'N';
+var currentlinecount = 0;
+var lijstbh = '';
+var collength = [];
+var colnbrblocks = [];
+var colvmuitgelijnd = [];
+var bottomuitlijn = 'N';
+var bottomuitlijngedaan = 'N';
+var blockseq = 0;
+
+// overnemen van siteinstelling
+try {minmargin = kolommargin_min} catch(err) {};
+try {maxmargin = kolommargin_max} catch(err) {};
+try {vertmargin = blokmarginbot} catch(err) {};
+try {uitlijn = uitlijnpar} catch(err) {};
+try {bottomuitlijn = bottomuitlijnpar} catch(err) {};
+try {lijstbh = lijstbeh} catch(err) {};
+
+$(function(){
+	$(window).resize(setupBlocks);
+});
+
+function setupBlocks(start) {
+	blockseq = 0;
+    maxdiav = 0;
+	$('.block,.blockbrk').each(function(ai,ae){
+	blockseq++;
+	try {$('#blokseq'+$(this).attr('id').replace('b','')).val(blockseq)} catch(err) {};
+	});
+
+
+	$('.blocklistclass').each(function(ai,ae){
+//console.log ($(this).children('.block').length);
+
+//qq	windowWidth = $('#blocklist').width();
+	windowWidth = $(this).width();
+    
+//qq	colWidth = $('.block').outerWidth();
+	colWidth = $(this).children('.block').outerWidth();
+	blocks = [];
+	colnbrblocks = [];
+	colCount = Math.floor(windowWidth/(colWidth+minmargin));
+	margin = Math.floor((windowWidth - colCount*colWidth)/(colCount-1));
+	if (margin > maxmargin) (margin = maxmargin);
+	if (colCount == 0) {colCount = 1;margin = 0};
+	leftstart = Math.floor((windowWidth - colCount*colWidth - (colCount-1)*margin)/2);
+	if (($('#sidecolumn').length != 0) && ($('#sidecolumn').css('float') == 'nietright')) {leftstart = 0};
+	if (($('#sidecolumn').length != 0) && ($('#sidecolumn').css('float') == 'nietleft')) {leftstart = Math.floor((windowWidth - colCount*colWidth - (colCount-1)*margin))};
+
+	if (colCount > $(this).children('.block').length) {
+		colCount = $(this).children('.block').length
+		margin = Math.floor((windowWidth - colCount*colWidth)/(colCount-1));
+		if (margin > maxmargin) (margin = maxmargin);
+		leftstart = Math.floor((windowWidth - colCount*colWidth - (colCount-1)*margin)/2);
+		if (($('#sidecolumn').length != 0) && ($('#sidecolumn').css('float') == 'right')) {leftstart = 0};
+		//if (($('#sidecolumn').length != 0) && ($('#sidecolumn').css('float') == 'left')) {leftstart = Math.floor((windowWidth - colCount*colWidth - (colCount-1)*margin))};
+	};
+
+	if ($('#sidecolumn').length == 0) {
+    if ((colCount*colWidth + ((colCount-1) * margin)) > maxdiav) {
+	try {$('#diav').css("maxWidth",(colCount*colWidth + ((colCount-1) * margin) - ($('#diav').css("border-left-width").replace('px', ''))  - ($('#diav').css("border-right-width").replace('px', ''))) + "px")} catch(err) {};
+	try {$('#diav').css("left",leftstart + "px")} catch(err) {};
+	try {$('#blocklistwrap #mapdiv').css("maxWidth",(colCount*colWidth + ((colCount-1) * margin) - ($('#blocklistwrap #mapdiv').css("border-left-width").replace('px', ''))  - ($('#blocklistwrap #mapdiv').css("border-right-width").replace('px', ''))) + "px")} catch(err) {};
+    try {$('#blocklistwrap #mapdiv').css("left",leftstart + "px")} catch(err) {};
+    maxdiav = (colCount*colWidth + ((colCount-1) * margin));
+    }
+	}
+	else {
+	try {$('.sideblock').css("margin-top",vertmargin + "px")} catch(err) {};
+	}
+
+	
+	for(var i=0;i<colCount;i++){
+		blocks.push(vertmargin);
+		// alvast eerste blokken plaatsen
+		try {
+		var leftPos = leftstart + (i*(colWidth+margin));
+		$(this).children('.block').eq(i).css({
+			'left':leftPos+'px',
+			'top':vertmargin+'px',
+			'display':'block'
+		});
+
+		} catch(err) {};
+		colnbrblocks[i] = 0;
+	}
+	positionBlocks(this);
+
+
+
+
+
+
+
+	});
+
+
+
+
+
+
+	if ((bottomuitlijn == 'Y') && (bottomuitlijngedaan == 'N')) {bottomuitlijngedaan = 'Y';setupBlocks()};
+
+
+
+
+
+
+}
+
+function positionBlocks(divoh) {
+currentlinecount = 0;
+	$(divoh).children('.block').each(function(ai,ae){
+	
+var vm = vertmargin;
+if ((normhoogte > 1) && (redo == 'N')) {
+var ff = 1 + Math.floor((($(this).outerHeight()+vertmargin) / (normhoogte+vertmargin)));
+if (colCount > 1) {$(this).height(ff*normhoogte + (ff-1)*vertmargin)};
+// regel hieronder als alleen de marges worden vergroot
+// if (colCount > 1) {vm = vertmargin + (ff*normhoogte + (ff-1)*vertmargin) - $(this).outerHeight()};
+};
+
+		var min = Array.min(blocks);
+		var index = $.inArray(min, blocks);
+		var leftPos = leftstart + (index*(colWidth+margin));
+//		var start = new Date().getTime();
+//		console.log ('blok'+index+' '+start);
+		colnbrblocks[index]++;
+		var toppos = min;
+		if ((bottomuitlijn == 'Y') && (colvmuitgelijnd[index] > 0) && (colnbrblocks[index] > 1)) {toppos += (colnbrblocks[index]-1)*colvmuitgelijnd[index]};
+
+		$(this).css({
+			'left':leftPos+'px',
+			'top':toppos+'px',
+			'display':'block'
+		});
+//		console.log ('i:'+index+'|min:'+min+'|oh:'+$(this).outerHeight()+'this:'+this.id);
+		blocks[index] = min+$(this).outerHeight()+vm;
+		contHeight += $(this).outerHeight()+vm;
+		
+		if (uitlijn == 'Y') {
+			currentlinecount++;
+			if ((index == (colCount - 1)) || ($('.block').length == (ai+1))){
+				var maxp = Array.max(blocks);
+				for(var i=0;i<currentlinecount;i++){
+					blocks[i] = maxp;
+				}
+				currentlinecount = 0;
+			}
+		}
+		//this.style.display = '';
+		//document.getElementById('blocklist').style.height = Math.floor(100+blocks[index]) + 'px';
+		//if (lijstbh == '') {$(divoh).css('height',Math.max(document.getElementById('blocklist').style.height.replace('px',''),Math.floor(blocks[index]+100)) + 'px')};
+		if (lijstbh == '') {$(divoh).css('height',Math.max(toppos + $(this).height() + vm,$(divoh).height()))}
+	});	
+	
+	if (bottomuitlijn == 'Y') {
+	for(var i=0;i<colCount;i++){
+		collength[i] = blocks[i];
+		if (colnbrblocks[i] > 1) {colvmuitgelijnd[i] = (Array.max(blocks) - collength[i]) / (colnbrblocks[i]-1)};
+		//console.log ('i:'+collength[i]+"|"+colnbrblocks[i]+"|"+colvmuitgelijnd[i]);
+	}
+	}
+//	$('.blockbrk').css('display','block');
+	$('#blocklistwrap').css('padding-bottom','100px');
+	redo = 'Y';
+}
+
+// Function to get the Min value in Array
+Array.min = function(array) {
+    return Math.min.apply(Math, array);
+};
+
+// Function to get the Min value in Array
+Array.max = function(array) {
+    return Math.max.apply(Math, array);
+};

@@ -1,0 +1,10 @@
+var ajaxIndex = ajax_objects.length;
+ajax_objects[ajaxIndex] = new sack();
+ajax_objects[ajaxIndex].method = 'POST';
+
+ajax_objects[ajaxIndex].setVar('page',window.location.pathname);
+ajax_objects[ajaxIndex].setVar('snm',snm);
+
+ajax_objects[ajaxIndex].requestFile = '/countpage.cgi';	
+ajax_objects[ajaxIndex].runAJAX();		// Execute AJAX function		
+

@@ -1,0 +1,90 @@
+
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="/style.css" />
+<script language="javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+.bodybg {background:#ffffff;}
+INPUT, TEXTAREA {
+font-family:Verdana, Fontello;
+padding:5px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/fontello/css/fontello.css?rev=250217">
+<link rel="stylesheet" type="text/css" href="/fontello/css/animation.css">
+<!--[if IE 7]><link rel="stylesheet" href="/fontello/css/fontello-ie7.css"><![endif]-->
+<link href="//fonts.googleapis.com/css?family=Montserrat:400,600|Nunito+Sans:300,300i,400,600" rel="stylesheet">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+
+
+<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+</head>
+<body class="bodybg contactform"  style="border:1px solid white;padding:20px 20px 0px 20px">
+
+<script language="Javascript">
+if (parent.location.href == window.location.href) {
+window.location.replace('/#contact');
+};
+</script>
+
+<div class="contactform">
+<script src="/validate.js"></script>
+<script language="Javascript">
+function gocontact () {
+if (document.forms['rForm'].elements['rf_naam'].value == "") {alert ("Vul svp naam in");rForm.rf_naam.focus();return(false)};
+if (document.forms['rForm'].elements['rf_email'].value == "") {alert ("Vul svp e-mailadres in");rForm.rf_email.focus();return(false)};
+if (!(validEmail(document.forms['rForm'].elements['rf_email'],"Vul svp geldig email-adres in"))) {return(false)};
+if (document.forms['rForm'].elements['rf_email2'].value == "") {alert ("Vul svp e-mailadres ter controle in");rForm.rf_email2.focus();return(false)};
+if (document.forms['rForm'].elements['rf_email'].value != document.forms['rForm'].elements['rf_email2'].value) {alert ("E-mailadres en controle-adres zijn niet gelijk");rForm.rf_email.focus();return(false)};
+if (document.forms['rForm'].elements['rf_bericht'].value == "") {alert ("Vul svp bericht in");rForm.rf_bericht.focus();return(false)};
+if (document.forms['rForm'].elements['rf_som'].value != "6") {alert ("Vul svp rekensommetje juist in");rForm.rf_som.focus();return(false)};
+if (document.forms['rForm'].elements['process2'].value == "Y") {document.forms['rForm'].elements['process2'].value = 'F';};
+if (document.forms['rForm'].elements['process2'].value == "F") {
+document.forms['rForm'].elements['cf1'].value = '2026-10-19 14:59:57';
+document.forms['rForm'].elements['cf2'].value = '1416832';
+document.forms['rForm'].elements['cf3'].value = '20.165.107.235';
+};
+
+document.forms['rForm'].submit();
+}
+</script>
+<div class="txt" style="padding:7px;">
+<h1>CONTACT</h1>
+<img class="contactlogo" style="display:none;height:50px" src="/uimg/snelsite2018/sitetopf.png">
+
+<br><b>MoveNext B.V. - media design</b><br>Sisalbaan 5a, 2352AZ Leiderdorp Nederland<br>Telefoon 071 - 524 18 39<br>E-mail <a href="mailto:snelsite@movenext.nl">snelsite@movenext.nl</a><hr>
+
+<form name="rForm" method="post" onsubmit="gocontact()" >
+<input type="hidden" name="process" value="Y">
+<input type="hidden" name="processsom" value="6">
+<input type="hidden" name="process2" value="Y">
+<input type="hidden" name="cf1" value="">
+<input type="hidden" name="cf2" value="">
+<input type="hidden" name="cf3" value="">
+
+<p><input name="rf_naam" type="text" size="30" maxlength="100" style="width:270" autocomplete="name" placeholder=" &#xe827; Naam">
+<p><input name="rf_organisatie" type="text" size="30" maxlength="100" style="width:270" autocomplete="organization" placeholder=" &#xe819; Organisatie">
+<p><input name="rf_email" type="text" size="30" maxlength="100" style="width:270" autocomplete="email" placeholder=" &#xe801; E-mail">
+<p><input name="rf_email2" type="text" size="30" maxlength="100" style="width:270" autocomplete="email" placeholder=" &#xe801; Bevestig e-mail">
+<p><input name="rf_telefoon" type="text" size="30" maxlength="100" style="width:270" autocomplete="tel" placeholder=" &#xe803; Telefoon">
+<p><textarea name="rf_bericht" rows="6" cols="60" style="width:270" placeholder="Bericht"></textarea></p>
+<p>5 + 1 = <input name="rf_som" type="text" size="5" maxlength="50" style="width:80px">
+<p><input type="button" onclick="gocontact()" value="Verzend" class="button buttonblue" style="width:170px">
+
+<p><a href="/privacystatement-avg" target="_blank">Privacystatement/AVG</a>
+
+</form>
+
+</div>
+</div>
+
+<script language="javascript">
+$('.fancybox-overlay',parent.document).scrollTop(0);
+</script>
+</body>
+</html>

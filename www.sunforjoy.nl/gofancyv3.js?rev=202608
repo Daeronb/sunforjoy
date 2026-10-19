@@ -1,0 +1,135 @@
+function gofancy (burl,wd,hg) {
+if ((burl.indexOf('/usermgmt') > -1) && ((ltablet == 'Y') || (lmobile == 'Y'))) {
+window.location.href=burl;
+}
+
+else if (burl.indexOf('/usermgmt') > -1) {
+$.fancybox({ 
+'href': burl,
+'width'				: wd,
+'height'			: hg,
+'minWidth'			: wd,
+'maxWidth'			: wd,
+'minHeight'			: hg,
+'maxHeight'			: hg,
+'padding'			: 0,
+'type'				: 'iframe',
+'scrolling'			: 'hidden',
+'fitToView'	: true,
+'autoSize' : false,
+'preload' : false,
+iframe: {
+              preload: false
+          },
+beforeClose: function(){
+    return checkchangedp();
+},
+
+helpers : {
+        overlay : {
+            locked: true
+        },
+        overlay : {
+            css : {
+                'background' : 'rgba(58, 42, 45, 0.3)'
+            }
+        }
+    }
+
+});
+}
+
+
+
+
+else {
+$.fancybox({ 
+'href': burl,
+'width'				: wd,
+'height'			: hg,
+'minWidth'			: wd,
+'maxWidth'			: wd,
+'minHeight'			: hg,
+'maxHeight'			: hg,
+'padding'			: 0,
+'type'				: 'iframe',
+'scrolling'			: 'hidden',
+'fitToView'	: true,
+'autoSize' : false,
+'preload' : false,
+iframe: {
+              preload: false
+          },
+beforeShow: function(){
+		$(".fancybox-outer").css("background-color",$("#switchkleur").css("background-color"));
+    },
+afterClose: function(){
+		try{history.replaceState( {}, '', location.href.split('#')[0] )} catch(err) {};
+		try{sluitfb()} catch(err) {};
+		try{initwm()} catch(err) {};
+    },
+helpers : {
+        overlay : {
+            locked: true
+        },
+        overlay : {
+            css : {
+                'background' : 'rgba(58, 42, 45, 0.3)'
+            }
+        }
+    }
+
+});
+};
+};
+
+function gofancyvertical (burl,wd,hg,vtype) {
+if ((burl.indexOf('/usermgmt') > -1) && ((ltablet == 'Y') || (lmobile == 'Y'))) {
+window.location.href=burl;
+}
+else {
+$.fancybox({ 
+'href': burl,
+'width'				: wd,
+'height'			: hg,
+'minWidth'			: wd,
+'maxWidth'			: wd,
+'minHeight'			: hg,
+'maxHeight'			: hg,
+'padding'			: 0,
+'type'				: 'iframe',
+'scrolling'			: 'hidden',
+'fitToView'	: false,
+'autoSize' : false,
+'preload' : false,
+iframe: {
+              preload: false
+          },
+beforeShow: function(){
+//this.href="";
+		$(".fancybox-outer").css("background","transparent");
+		$(".fancybox-skin").css("backgroundColor","none");
+		$(".fancybox-skin").css("box-shadow","none");
+		this.height = $('.fancybox-iframe').contents().find('html').height()+1000;
+
+    },
+afterClose: function(){
+		try{history.replaceState( {}, '', location.href.split('#')[0] )} catch(err) {};
+		try{sluitfb()} catch(err) {};
+		try{initwm()} catch(err) {};
+    },
+helpers : {
+        overlay : {
+            locked: true,
+			fixed:true,
+            css : {
+                'background' : 'rgba(58, 42, 45, 0.3)'
+            }
+        }
+    }
+
+});
+};
+
+};
+
