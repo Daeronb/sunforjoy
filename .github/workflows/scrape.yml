@@ -1,5 +1,5 @@
 name: scrape-oude-site
-# Spiegelt de huidige sunforjoy.nl (tekst, css, afbeeldingen) naar branch 'scrape'
+# Haalt de originele (volle resolutie) afbeeldingen van sunforjoy.nl op naar branch 'scrape'
 on:
   push:
     paths: ['.github/workflows/scrape.yml']
@@ -11,24 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Mirror sunforjoy.nl
+        with: { ref: scrape }
+      - name: Full-size images
         run: |
-          OUT="$RUNNER_TEMP/out"; mkdir -p "$OUT"; cd "$OUT"
-          wget --mirror --page-requisites --adjust-extension --no-parent -e robots=off \
-            --span-hosts --domains=sunforjoy.nl,www.sunforjoy.nl,snelsite.nl,www.snelsite.nl \
-            --wait=0.3 --tries=2 --timeout=20 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-            https://www.sunforjoy.nl/ https://www.sunforjoy.nl/sitemap https://www.sunforjoy.nl/contact \
-            https://www.sunforjoy.nl/robots.txt https://www.sunforjoy.nl/sitemap.xml 2>&1 | tail -n 40 || true
-          curl -sSL -A "Mozilla/5.0" -D headers.txt -o home-raw.html https://www.sunforjoy.nl/ || true
-          find . -type f | sort > filelist.txt
-          wc -l filelist.txt
-      - name: Commit to scrape branch
+          mkdir -p fullsize && cd fullsize
+          B=https://www.sunforjoy.nl/uimg/sunforjoy
+          for f in b113599_img1f.jpg b113601_img1f.jpg b65901_img1f.jpg b65903_img1f.jpg sitetopf.jpg sitedeffancyf.jpg siteiconf.png b66354_att-handleiding-zonnebank.png; do
+            curl -sSL -A "Mozilla/5.0" -o "$f" "$B/$f" || true
+            curl -sSL -A "Mozilla/5.0" -o "w2400_$f" "$B/$f?w=2400" || true
+          done
+          curl -sSL -A "Mozilla/5.0" -o favicon.ico https://www.sunforjoy.nl/favicon.ico || true
+          curl -sSL -A "Mozilla/5.0" -o privacy.html https://www.sunforjoy.nl/privacystatement-avg || true
+          ls -la
+      - name: Commit
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git checkout --orphan scrape
-          git rm -rf . -q
-          cp -r "$RUNNER_TEMP/out/." .
-          git add -A
-          git commit -q -m "Mirror sunforjoy.nl $(date -u +%F)"
-          git push -f origin scrape
+          git add -A && git commit -q -m "Full-size images" && git push origin scrape
