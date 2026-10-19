@@ -78,8 +78,9 @@ p{margin:0 0 1em;max-width:68ch}
 .hero .lead{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:600;max-width:34ch;color:var(--avond)}
 .facts{list-style:none;padding:0;margin:26px 0 30px;display:flex;flex-wrap:wrap;gap:8px}
 .facts li{background:rgba(255,255,255,.28);border:1px solid rgba(38,19,13,.14);padding:6px 14px;border-radius:999px;font-weight:700;font-size:.95rem}
-.sun{position:relative;justify-self:center;width:min(100%,540px);aspect-ratio:1}
-.sun picture{position:relative;z-index:1;display:block;width:100%;height:100%}
+.sun{position:relative;justify-self:center;width:min(100%,540px)}
+.sun-disc{position:relative;width:100%;height:0;padding-bottom:100%}
+.sun-disc picture{position:absolute;inset:0;z-index:1;display:block}
 .sun img{width:100%;height:100%;object-fit:cover;object-position:46% 40%;border-radius:50%;box-shadow:0 0 0 8px rgba(255,255,255,.28),0 30px 120px rgba(120,40,0,.45)}
 .sun .today{position:absolute;left:-6%;bottom:9%;background:#fff;border-radius:22px;padding:16px 20px;box-shadow:0 18px 50px rgba(60,20,0,.28);min-width:210px}
 .today .label{font-weight:800;font-size:.85rem;color:var(--tekst-zacht);margin:0}
@@ -87,7 +88,7 @@ p{margin:0 0 1em;max-width:68ch}
 .today .status{margin-top:8px;padding:5px 12px;font-size:.85rem}
 @media (max-width:860px){
   .hero .wrap{grid-template-columns:1fr;min-height:0;padding-top:32px;gap:28px}
-  .sun{order:-1;width:min(82%,380px)}
+  .sun{order:-1;width:min(70%,330px)}
   .sun .today{left:auto;right:-8%;bottom:2%;min-width:0;padding:12px 16px}
   .today .big{font-size:1.2rem}
 }
@@ -234,7 +235,13 @@ p{margin:0 0 1em;max-width:68ch}
 .arc-labels{display:flex;justify-content:space-between;font-weight:800;font-size:.82rem;color:var(--tekst-zacht);margin-top:-2px;font-variant-numeric:tabular-nums}
 .sunline{margin:10px 0 0;font-size:.88rem;line-height:1.45;color:var(--tekst-zacht);max-width:30ch}
 @media (max-width:860px){
-  .sun .today{position:relative;left:auto;right:auto;bottom:auto;margin:-44px auto 0;width:min(100%,320px)}
+  .sun .today{position:relative;left:auto;right:auto;bottom:auto;margin:19% 0 0 50%;transform:translateX(-50%);width:min(calc(100vw - 40px),380px);max-width:none;padding:14px 16px;display:grid;grid-template-columns:112px minmax(0,1fr);column-gap:14px;align-items:center}
+  .sun .today .label{grid-column:1/-1;margin-bottom:4px}
+  .sun .today .arc-wrap{grid-column:1;grid-row:2/4;margin:0}
+  .sun .today .arc-labels{font-size:.72rem}
+  .sun .today .status{grid-column:2;grid-row:2;justify-self:start;margin:0;font-size:.8rem;padding:4px 10px;white-space:normal}
+  .sun .today .sunline{grid-column:2;grid-row:3;margin:6px 0 0;font-size:.82rem}
+  .hero .wrap{gap:22px}
 }
 
 /* Tools-teaser */
@@ -288,8 +295,8 @@ input[type=range]{width:100%;accent-color:var(--oranje);height:28px}
 .htest-result.type1 .htype{background:#F6D5CF;color:#8A2A16}
 
 /* Draaiende ringen rond de zon: rustig, elk in een eigen tempo */
-.rings{position:absolute;left:-12%;top:-12%;width:124%;height:auto;aspect-ratio:1;z-index:0;pointer-events:none;overflow:visible}
-.ring{transform-origin:300px 300px;transform-box:view-box;animation:draai linear infinite}
+.ring{position:absolute;top:-12%;left:-12%;width:124%;height:124%;z-index:0;pointer-events:none;transform-origin:50% 50%;animation:draai linear infinite;will-change:transform}
+.ring svg{display:block;width:100%;height:100%;overflow:visible}
 .ring-1{animation-duration:140s;animation-direction:reverse}
 .ring-2{animation-duration:36s}
 .ring-3{animation-duration:90s}
@@ -298,4 +305,4 @@ input[type=range]{width:100%;accent-color:var(--oranje);height:28px}
 @keyframes draai{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.ring{animation:none}}
 .sun .today{z-index:2}
-@media (max-width:860px){.rings{left:-15%;top:-15%;width:130%}}
+@media (max-width:860px){.ring{top:-15%;left:-15%;width:130%;height:130%}}
